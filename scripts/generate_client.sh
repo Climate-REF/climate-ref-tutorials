@@ -1,15 +1,13 @@
 #!/usr/bin/env bash
 # Generate and install the REF API client from the live OpenAPI schema.
 #
-# The client is generated rather than committed so it always matches the
-# current API. This script is run by the Binder build (.binder/postBuild),
-# by CI, and can be run manually after `uv sync`.
+# The client is generated rather than committed so it always matches the current API. 
+# This script is run by the Binder build (.binder/postBuild), by CI, and can be run manually after `uv sync`.
 set -euo pipefail
 
 API_SCHEMA_URL="${REF_API_SCHEMA_URL:-https://api.climate-ref.org/api/v1/openapi.json}"
 OUTPUT_DIR="${REF_CLIENT_OUTPUT_DIR:-climate_ref_client}"
 CONFIG_FILE="$(mktemp -t openapi-client-config.XXXXXX.yaml)"
-trap 'rm -f "$CONFIG_FILE"' EXIT
 
 # Pin the generated package/import name so notebook imports stay stable
 # even if the API's OpenAPI `info.title` is renamed upstream.

@@ -1,17 +1,11 @@
 """Construction of the REF API client.
 
-The client class lives in ``climate_ref_client``, a package that is
-*generated* from the REF API's OpenAPI schema (see ``scripts/generate_client.sh``).
-The import is deliberately deferred to the function body so that the rest of
-this package -- and its tests -- can be used without the generated client
-being present.
+The client class lives in ``climate_ref_client``,
+a package that is *generated* from the REF API's OpenAPI schema (see ``scripts/generate_client.sh``).
 """
-
-from __future__ import annotations
 
 from typing import Any
 
-#: Public, read-only REF API used throughout the training notebooks.
 DEFAULT_API_URL = "https://api.climate-ref.org"
 
 
@@ -32,12 +26,11 @@ def get_client(base_url: str = DEFAULT_API_URL) -> Any:
     ------
     ModuleNotFoundError
         If the generated ``climate_ref_client`` package is not installed.
-        Run ``scripts/generate_client.sh`` (the Binder/CI setup does this
-        automatically).
+        Run ``scripts/generate_client.sh`` (the Binder/CI setup does this automatically).
     """
     try:
         from climate_ref_client import Client
-    except ModuleNotFoundError as exc:  # pragma: no cover - environment guard
+    except ModuleNotFoundError as exc:  # pragma: no cover
         msg = (
             "The generated 'climate_ref_client' package is not installed. "
             "Run scripts/generate_client.sh to generate and install it."

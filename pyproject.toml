@@ -14,6 +14,7 @@ authors = [
 # The generated `climate_ref_client` package is NOT listed here: it is
 # generated from the live API schema by scripts/generate_client.sh.
 dependencies = [
+    "pip>=26.1.1",
     "pandas>=2.0",
     "matplotlib>=3.8",
     "seaborn>=0.13",
@@ -26,7 +27,6 @@ dependencies = [
     "prettyprinter>=0.18",
     "ipython>=8.0",
     "jupyterlab>=4.0",
-
     # Needed by the local-execution notebooks (04+).
     "climate-ref",
 ]
