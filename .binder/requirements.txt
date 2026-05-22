@@ -1,0 +1,21 @@
+# Binder / repo2docker dependency list.
+#
+# This mirrors the runtime dependencies in ../pyproject.toml. It is consumed
+# by repo2docker before .binder/postBuild runs (which installs the helper
+# package and generates the API client).
+#
+# Regenerate from the resolved uv environment with: scripts/export_requirements.sh
+pandas>=2.0
+matplotlib>=3.8
+seaborn>=0.13
+xarray>=2024.0
+netcdf4>=1.6
+cartopy>=0.23
+requests>=2.31
+pandas-indexing>=0.5
+rich>=13.0
+prettyprinter>=0.18
+ipython>=8.0
+jupyterlab>=4.0
+climate-ref
+climate-ref-example

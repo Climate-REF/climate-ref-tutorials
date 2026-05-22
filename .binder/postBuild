@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Binder/repo2docker postBuild hook.
+#
+# repo2docker installs .binder/requirements.txt first, then runs this script.
+# Here we install the helper package and generate the REF API client.
+set -euo pipefail
+
+# Install the ref_tutorials helper package from this repo.
+python -m pip install --no-deps .
+
+# Generate and install the REF API client from the live schema.
+bash scripts/generate_client.sh

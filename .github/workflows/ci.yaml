@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Weekly
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6.0.2
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+      - name: Sync environment
+        run: uv sync --extra dev
+      - name: Ruff check (package + scripts)
+        run: uv run ruff check src tests
+      - name: Ruff check (notebooks)
+        run: uv run nbqa ruff notebooks
+      - name: Check Binder requirements are in sync
+        run: |
+          cp .binder/requirements.txt /tmp/requirements.committed.txt
+          bash scripts/export_requirements.sh
+          diff /tmp/requirements.committed.txt .binder/requirements.txt \
+            || (echo "::error::.binder/requirements.txt is stale; run scripts/export_requirements.sh" && exit 1)
+
+  notebooks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6.0.2
+      - name: Install system libraries for cartopy
+        run: sudo apt-get update && sudo apt-get install -y libgeos-dev libproj-dev proj-bin proj-data
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+      - name: Sync environment
+        run: uv sync --extra dev
+      - name: Generate REF API client
+        run: uv run bash scripts/generate_client.sh
+      - name: Execute all notebooks
+        run: uv run pytest --nbmake notebooks
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6.0.2
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+      - name: Sync environment
+        run: uv sync --extra dev
+      - name: Run helper-package unit tests
+        run: uv run pytest tests

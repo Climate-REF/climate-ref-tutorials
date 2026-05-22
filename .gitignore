@@ -1,0 +1,27 @@
+# Generated REF API client (regenerated from the live schema).
+/climate_ref_client/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+build/
+dist/
+
+# uv
+# uv.lock IS committed.
+
+# Notebook artefacts
+# NOTE: notebook OUTPUTS are intentionally NOT stripped or ignored, so the
+# rendered notebooks are viewable directly on GitHub.
+.ipynb_checkpoints/
+
+# Figures / data produced by notebooks
+/notebooks/output/
+/notebooks/data/
+
+# Tooling
+.pytest_cache/
+.ruff_cache/
+.DS_Store
