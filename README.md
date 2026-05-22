@@ -3,8 +3,7 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Climate-REF/climate-ref-tutorials/main?urlpath=lab/tree/notebooks)
 [![CI](https://github.com/Climate-REF/climate-ref-tutorials/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/Climate-REF/climate-ref-tutorials/actions/workflows/ci.yaml)
 
-A self-contained set of training notebooks for the
-[Climate Rapid Evaluation Framework (REF)](https://climate-ref.org).
+A self-contained set of training notebooks for the [Climate Rapid Evaluation Framework (REF)](https://climate-ref.org).
 
 The notebooks take you from *what the REF is* through to *querying the public
 REF API* and *building a publication-ready figure*.
@@ -26,6 +25,7 @@ git clone https://github.com/Climate-REF/climate-ref-tutorials.git
 cd climate-ref-tutorials
 uv sync                           # create the environment
 uv run bash scripts/generate_client.sh   # generate the REF API client
+uv run python -c "from ref_tutorials import fetch_sample_data; fetch_sample_data()"   # pre-fetch sample data (notebook 04)
 uv run jupyter lab notebooks      # open the notebooks
 ```
 
@@ -38,7 +38,7 @@ introduced earlier.
 | --- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------- |
 | 01  | [REF concepts](notebooks/01-ref-concepts.ipynb)                         | The core vocabulary: diagnostics, providers, executions, metrics, datasets         | None          |
 | 02  | [Querying the REF API](notebooks/02-querying-the-api.ipynb)             | Set up the API client, list diagnostics, fetch metric values, inspect an execution | 01            |
-| 03  | [A publication-ready figure](notebooks/03-publication-figure.ipynb)     | Build a polished multi-model metric comparison figure and save it                  | 01, 02        |
+| 03  | [Figure generation](notebooks/03-publication-figure.ipynb)     | Build a polished multi-model metric comparison figure and save it                  | 01, 02        |
 | 04  | [Running a diagnostic locally](notebooks/04-local-diagnostic-run.ipynb) | Define a custom diagnostic provider and run it locally on small sample data        | 01            |
 
 More notebooks will be added over time — see [CONTRIBUTING.md](CONTRIBUTING.md).
