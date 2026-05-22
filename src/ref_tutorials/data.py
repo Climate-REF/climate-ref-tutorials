@@ -60,7 +60,7 @@ def fetch_sample_data(force_cleanup: bool = False) -> Path:
     ModuleNotFoundError
         If the ``climate-ref`` package is not installed.
     """
-    test_data_dir = str(Path(__file__).parents[4] / "tests" / "test-data")
+    test_data_dir = str(Path(__file__).parents[2] / "tests" / "test-data")
     os.environ.setdefault("REF_TEST_DATA_DIR", test_data_dir)
     Path(test_data_dir).mkdir(parents=True, exist_ok=True)
 

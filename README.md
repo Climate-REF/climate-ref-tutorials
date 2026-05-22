@@ -38,27 +38,24 @@ introduced earlier.
 | --- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------- |
 | 01  | [REF concepts](notebooks/01-ref-concepts.ipynb)                         | The core vocabulary: diagnostics, providers, executions, metrics, datasets         | None          |
 | 02  | [Querying the REF API](notebooks/02-querying-the-api.ipynb)             | Set up the API client, list diagnostics, fetch metric values, inspect an execution | 01            |
-| 03  | [Figure generation](notebooks/03-publication-figure.ipynb)     | Build a polished multi-model metric comparison figure and save it                  | 01, 02        |
+| 03  | [Figure generation](notebooks/03-publication-figure.ipynb)              | Build a polished multi-model metric comparison figure and save it                  | 01, 02        |
 | 04  | [Running a diagnostic locally](notebooks/04-local-diagnostic-run.ipynb) | Define a custom diagnostic provider and run it locally on small sample data        | 01            |
 
 More notebooks will be added over time — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## How it works
 
-- Notebooks 01–03 query the **live** public REF API at
-  <https://api.climate-ref.org>. An internet connection is required; the
-  notebooks fail clearly if the API is unreachable.
+- Notebooks 01–03 query the **live** public REF API at <https://api.climate-ref.org>.
+  An internet connection is required; the notebooks fail clearly if the API is unreachable.
 - The REF API client (`climate_ref_client`) is **generated** from the API's
-  [OpenAPI schema](https://api.climate-ref.org/api/v1/openapi.json) by
-  `scripts/generate_client.sh`, so it always matches the current API. It is
-  not committed to this repository.
+  [OpenAPI schema](https://api.climate-ref.org/api/v1/openapi.json) by `scripts/generate_client.sh`,
+  so it always matches the current API.
+  It is not committed to this repository.
 - Notebook 04 fetches a small CMIP6 sample dataset via the REF CLI and runs a
-  **custom diagnostic provider** — defined in `src/ref_tutorials/provider.py` —
-  locally.
+  **custom diagnostic provider**, defined in `src/ref_tutorials/provider.py` locally.
 - Shared logic lives in the `ref_tutorials` helper package (`src/ref_tutorials`),
   keeping the notebooks short and readable.
-- Notebook **outputs are committed** so the notebooks render fully on GitHub
-  without being run.
+- Notebook **outputs are committed** so the notebooks render fully on GitHub without being run.
 
 ## License
 

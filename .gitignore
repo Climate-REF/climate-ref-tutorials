@@ -9,9 +9,6 @@ __pycache__/
 build/
 dist/
 
-# uv
-# uv.lock IS committed.
-
 # Notebook artefacts
 # NOTE: notebook OUTPUTS are intentionally NOT stripped or ignored, so the
 # rendered notebooks are viewable directly on GitHub.
@@ -20,6 +17,9 @@ dist/
 # Figures / data produced by notebooks
 /notebooks/output/
 /notebooks/data/
+
+# Sample data
+/tests/test-data/sample-data/
 
 # Tooling
 .pytest_cache/
