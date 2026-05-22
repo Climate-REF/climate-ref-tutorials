@@ -1,7 +1,5 @@
 """Unit tests for the ``ref_tutorials`` helper package."""
 
-from __future__ import annotations
-
 from dataclasses import dataclass, field
 
 import matplotlib
@@ -16,8 +14,6 @@ from ref_tutorials import (
 )
 from ref_tutorials.plotting import PUBLICATION_RCPARAMS
 
-# The Agg backend is selected in conftest.py before this module is imported.
-
 
 @dataclass
 class _Dimensions:
@@ -30,7 +26,7 @@ class _MetricValue:
     dimensions: _Dimensions
 
     @classmethod
-    def make(cls, value: float, **dims: object) -> _MetricValue:
+    def make(cls, value: float, **dims: object) -> "_MetricValue":
         return cls(value=value, dimensions=_Dimensions(additional_properties=dict(dims)))
 
 

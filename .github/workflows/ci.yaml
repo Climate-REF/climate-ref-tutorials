@@ -18,16 +18,8 @@ jobs:
         uses: astral-sh/setup-uv@v8.1.0
       - name: Sync environment
         run: uv sync --extra dev
-      - name: Ruff check (package + scripts)
-        run: uv run ruff check src tests
-      - name: Ruff check (notebooks)
-        run: uv run nbqa ruff notebooks
-      - name: Check Binder requirements are in sync
-        run: |
-          cp .binder/requirements.txt /tmp/requirements.committed.txt
-          bash scripts/export_requirements.sh
-          diff /tmp/requirements.committed.txt .binder/requirements.txt \
-            || (echo "::error::.binder/requirements.txt is stale; run scripts/export_requirements.sh" && exit 1)
+      - name: Run pre-commit hooks
+        run: uv run pre-commit run --all-files
 
   notebooks:
     runs-on: ubuntu-latest

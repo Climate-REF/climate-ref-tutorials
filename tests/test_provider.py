@@ -8,8 +8,6 @@ Actually *running* the diagnostic against data is covered by executing
 notebook 04 in CI; here we only check the provider is wired up correctly.
 """
 
-from __future__ import annotations
-
 import pytest
 
 pytest.importorskip("climate_ref_core")

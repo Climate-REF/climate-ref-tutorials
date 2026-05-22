@@ -14,8 +14,6 @@ everything a real diagnostic produces:
 - **figures** (a timeseries plot and an anomaly plot).
 """
 
-from __future__ import annotations
-
 import importlib.metadata
 from pathlib import Path
 

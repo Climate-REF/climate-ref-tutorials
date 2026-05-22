@@ -4,8 +4,6 @@ These helpers keep figures consistent across the training notebooks and give
 readers a recipe they can copy into their own work.
 """
 
-from __future__ import annotations
-
 from pathlib import Path
 
 import matplotlib.pyplot as plt
