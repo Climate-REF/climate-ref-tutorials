@@ -1,30 +1,22 @@
-"""Unit tests for the ``ref_tutorials`` helper package.
-
-These tests cover the *observable contract* of the helper functions, not their
-internals. They do not require network access or the generated API client.
-"""
+"""Unit tests for the ``ref_tutorials`` helper package. """
 
 from __future__ import annotations
 
 from dataclasses import dataclass, field
 
 import matplotlib
+import pandas as pd
+import pytest
 
-matplotlib.use("Agg")  # Headless backend for CI.
-
-import pandas as pd  # noqa: E402
-import pytest  # noqa: E402
-
-from ref_tutorials import (  # noqa: E402
+from ref_tutorials import (
     metric_values_to_dataframe,
     model_comparison_figure,
     save_figure,
     set_publication_style,
 )
-from ref_tutorials.plotting import PUBLICATION_RCPARAMS  # noqa: E402
+from ref_tutorials.plotting import PUBLICATION_RCPARAMS
 
-# --- Test doubles -----------------------------------------------------------
-# Minimal stand-ins for the metric value objects returned by climate_ref_client.
+# The Agg backend is selected in conftest.py before this module is imported.
 
 
 @dataclass
@@ -41,8 +33,6 @@ class _MetricValue:
     def make(cls, value: float, **dims: object) -> _MetricValue:
         return cls(value=value, dimensions=_Dimensions(additional_properties=dict(dims)))
 
-
-# --- metric_values_to_dataframe ---------------------------------------------
 
 
 def test_metric_values_to_dataframe_flattens_dimensions():
@@ -79,8 +69,6 @@ def test_metric_values_to_dataframe_empty_input():
     assert df.empty
 
 
-# --- set_publication_style --------------------------------------------------
-
 
 def test_set_publication_style_applies_rcparams():
     matplotlib.rcParams["font.size"] = 99  # Pollute first.
@@ -89,8 +77,6 @@ def test_set_publication_style_applies_rcparams():
 
     assert matplotlib.rcParams["font.size"] == PUBLICATION_RCPARAMS["font.size"]
 
-
-# --- model_comparison_figure ------------------------------------------------
 
 
 def test_model_comparison_figure_returns_fig_and_axes():
@@ -121,8 +107,6 @@ def test_model_comparison_figure_aggregates_ensemble_members():
 
     assert len(ax.patches) == 2
 
-
-# --- save_figure ------------------------------------------------------------
 
 
 def test_save_figure_writes_png_and_pdf(tmp_path):

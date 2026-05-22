@@ -18,29 +18,28 @@ from __future__ import annotations
 
 import importlib.metadata
 from pathlib import Path
-from typing import Any
 
-import matplotlib
-
-matplotlib.use("Agg")  # Diagnostics run headless; no display is available.
-
-import matplotlib.pyplot as plt  # noqa: E402
-import xarray as xr  # noqa: E402
-from climate_ref_core.constraints import (  # noqa: E402
+import xarray as xr
+from climate_ref_core.constraints import (
     AddSupplementaryDataset,
     RequireContiguousTimerange,
 )
-from climate_ref_core.datasets import FacetFilter, SourceDatasetType  # noqa: E402
-from climate_ref_core.diagnostics import (  # noqa: E402
+from climate_ref_core.datasets import FacetFilter, SourceDatasetType
+from climate_ref_core.diagnostics import (
     DataRequirement,
     Diagnostic,
     ExecutionDefinition,
     ExecutionResult,
 )
-from climate_ref_core.metric_values.typing import SeriesMetricValue  # noqa: E402
-from climate_ref_core.providers import DiagnosticProvider  # noqa: E402
-from climate_ref_core.pycmec.metric import CMECMetric  # noqa: E402
-from climate_ref_core.pycmec.output import CMECOutput, OutputCV  # noqa: E402
+from climate_ref_core.metric_values.typing import SeriesMetricValue
+from climate_ref_core.providers import DiagnosticProvider
+from climate_ref_core.pycmec.metric import CMECMetric
+from climate_ref_core.pycmec.output import CMECOutput, OutputCV
+
+# The object-oriented matplotlib API. Using Figure directly -- rather than
+# pyplot -- means this library module touches no global state and needs no
+# interactive backend, so there is no matplotlib.use("Agg") call.
+from matplotlib.figure import Figure
 
 #: Name of the NetCDF file the diagnostic writes into its output directory.
 _OUTPUT_FILENAME = "annual_mean_global_mean_tas.nc"
@@ -115,18 +114,19 @@ def make_figures(ds: xr.Dataset, output_directory: Path) -> dict[str, Path]:
     tas = ds["tas"].values
 
     timeseries_path = output_directory / _TIMESERIES_PLOT
-    fig, ax = plt.subplots(figsize=(7, 4))
+    fig = Figure(figsize=(7, 4))
+    ax = fig.subplots()
     ax.plot(years, tas, marker="o", color="#1f77b4")
     ax.set_xlabel("Year")
     ax.set_ylabel("Global-mean tas (K)")
     ax.set_title("Annual-mean global-mean near-surface air temperature")
     fig.tight_layout()
     fig.savefig(timeseries_path, dpi=150)
-    plt.close(fig)
 
     anomaly_path = output_directory / _ANOMALY_PLOT
     anomaly = tas - tas.mean()
-    fig, ax = plt.subplots(figsize=(7, 4))
+    fig = Figure(figsize=(7, 4))
+    ax = fig.subplots()
     colors = ["#d62728" if a >= 0 else "#1f77b4" for a in anomaly]
     ax.bar(years, anomaly, color=colors)
     ax.axhline(0, color="#444444", linewidth=0.8)
@@ -135,7 +135,6 @@ def make_figures(ds: xr.Dataset, output_directory: Path) -> dict[str, Path]:
     ax.set_title("Annual-mean tas anomaly relative to the period mean")
     fig.tight_layout()
     fig.savefig(anomaly_path, dpi=150)
-    plt.close(fig)
 
     return {
         "Annual-mean global-mean tas timeseries": timeseries_path,
@@ -186,13 +185,11 @@ def _series_values(
 class AnnualMeanGlobalMeanTas(Diagnostic):
     """Annual-mean, global-mean near-surface air temperature.
 
-    A minimal custom diagnostic for the tutorials. It requires CMIP6 ``tas``
-    data, and pulls in the matching ``areacella`` cell-area field as a
+    A minimal custom diagnostic for the tutorials.
+    It requires CMIP6 ``tas`` data, and pulls in the matching ``areacella`` cell-area field as a
     supplementary dataset so the global mean can be area-weighted.
 
-    Its execution registers scalar metric values, a series metric value, and
-    two figures -- a representative cross-section of what a real diagnostic
-    produces.
+    Its execution registers scalar metric values, a series metric value, and two figures.
     """
 
     name = "Annual Mean Global Mean Temperature"
@@ -202,10 +199,13 @@ class AnnualMeanGlobalMeanTas(Diagnostic):
         (
             DataRequirement(
                 source_type=SourceDatasetType.CMIP6,
+                # We only look at each
                 filters=(FacetFilter(facets={"variable_id": ("tas",)}),),
                 group_by=("source_id", "experiment_id", "variant_label"),
                 constraints=(
+                    # Ensure that we have a contiguous time range to compute the annual mean from
                     RequireContiguousTimerange(group_by=("instance_id",)),
+                    # Add the matching areacella dataset as a supplementary dataset
                     AddSupplementaryDataset.from_defaults(
                         "areacella", SourceDatasetType.CMIP6
                     ),
@@ -225,6 +225,7 @@ class AnnualMeanGlobalMeanTas(Diagnostic):
     def execute(self, definition: ExecutionDefinition) -> None:
         """Compute the diagnostic: write the output NetCDF and the figures."""
         input_datasets = definition.datasets[SourceDatasetType.CMIP6]
+
         result = calculate_annual_mean_global_mean(input_datasets.path.to_list())
         if "time_bnds" in result:
             result = result.drop_vars("time_bnds")
@@ -235,9 +236,10 @@ class AnnualMeanGlobalMeanTas(Diagnostic):
     def build_execution_result(self, definition: ExecutionDefinition) -> ExecutionResult:
         """Package the output into an :class:`ExecutionResult`.
 
-        ``execute`` has already written the NetCDF file and the figures. Here we
-        register the scalar metric values, the series metric value, and the
-        figures so the REF records them.
+        ``execute`` has already written the NetCDF file and the figures.
+
+        Here we register the scalar metric values, the series metric value,
+        and the figures so the REF records them.
         """
         time_coder = xr.coders.CFDatetimeCoder(use_cftime=True)
         ds = xr.open_dataset(
@@ -245,11 +247,6 @@ class AnnualMeanGlobalMeanTas(Diagnostic):
         )
 
         selectors = definition.datasets[SourceDatasetType.CMIP6].selector_dict()
-        input_selectors: dict[str, Any] = {
-            "source_id": selectors["source_id"],
-            "experiment_id": selectors["experiment_id"],
-            "variant_label": selectors["variant_label"],
-        }
 
         # Register the figures written by execute().
         output_bundle = CMECOutput.create_template()
@@ -265,14 +262,14 @@ class AnnualMeanGlobalMeanTas(Diagnostic):
                 OutputCV.FILENAME.value: relative_path,
                 OutputCV.LONG_NAME.value: caption,
                 OutputCV.DESCRIPTION.value: caption,
-                OutputCV.DIMENSIONS.value: input_selectors,
+                OutputCV.DIMENSIONS.value: selectors,
             }
 
         return ExecutionResult.build_from_output_bundle(
             definition,
             cmec_output_bundle=output_bundle,
-            cmec_metric_bundle=_scalar_metric_bundle(ds, input_selectors),
-            series=_series_values(ds, input_selectors),
+            cmec_metric_bundle=_scalar_metric_bundle(ds, selectors),
+            series=_series_values(ds, selectors),
         )
 
 
