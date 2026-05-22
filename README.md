@@ -39,7 +39,7 @@ introduced earlier.
 | 01  | [REF concepts](notebooks/01-ref-concepts.ipynb)                         | The core vocabulary: diagnostics, providers, executions, metrics, datasets         | None          |
 | 02  | [Querying the REF API](notebooks/02-querying-the-api.ipynb)             | Set up the API client, list diagnostics, fetch metric values, inspect an execution | 01            |
 | 03  | [A publication-ready figure](notebooks/03-publication-figure.ipynb)     | Build a polished multi-model metric comparison figure and save it                  | 01, 02        |
-| 04  | [Running a diagnostic locally](notebooks/04-local-diagnostic-run.ipynb) | Run one REF diagnostic locally on small sample data                                | 01            |
+| 04  | [Running a diagnostic locally](notebooks/04-local-diagnostic-run.ipynb) | Define a custom diagnostic provider and run it locally on small sample data        | 01            |
 
 More notebooks will be added over time — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
@@ -53,7 +53,8 @@ More notebooks will be added over time — see [CONTRIBUTING.md](CONTRIBUTING.md
   `scripts/generate_client.sh`, so it always matches the current API. It is
   not committed to this repository.
 - Notebook 04 fetches a small CMIP6 sample dataset via the REF CLI and runs a
-  lightweight diagnostic locally.
+  **custom diagnostic provider** — defined in `src/ref_tutorials/provider.py` —
+  locally.
 - Shared logic lives in the `ref_tutorials` helper package (`src/ref_tutorials`),
   keeping the notebooks short and readable.
 - Notebook **outputs are committed** so the notebooks render fully on GitHub

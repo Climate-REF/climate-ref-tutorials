@@ -18,4 +18,3 @@ prettyprinter>=0.18
 ipython>=8.0
 jupyterlab>=4.0
 climate-ref
-climate-ref-example
