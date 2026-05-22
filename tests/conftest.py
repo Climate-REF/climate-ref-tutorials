@@ -1,4 +1,5 @@
 """Shared fixtures"""
+
 import matplotlib
 
 # The plotting helpers use pyplot.

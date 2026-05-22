@@ -72,9 +72,7 @@ def calculate_annual_mean_global_mean(input_files: list[Path]) -> xr.Dataset:
         The annual-mean global-mean timeseries.
     """
     time_coder = xr.coders.CFDatetimeCoder(use_cftime=True)
-    ds = xr.open_mfdataset(
-        input_files, combine="by_coords", chunks=None, decode_times=time_coder
-    )
+    ds = xr.open_mfdataset(input_files, combine="by_coords", chunks=None, decode_times=time_coder)
 
     annual_mean = ds.resample(time="YS").mean()
     # resample turns datetime bounds into object arrays; drop them before the
@@ -82,9 +80,7 @@ def calculate_annual_mean_global_mean(input_files: list[Path]) -> xr.Dataset:
     if "time_bnds" in annual_mean:
         annual_mean = annual_mean.drop_vars("time_bnds")
 
-    return annual_mean.weighted(ds.areacella.fillna(0)).mean(
-        dim=["lat", "lon"], keep_attrs=True
-    )
+    return annual_mean.weighted(ds.areacella.fillna(0)).mean(dim=["lat", "lon"], keep_attrs=True)
 
 
 def _years(ds: xr.Dataset) -> list[int]:
@@ -142,9 +138,7 @@ def make_figures(ds: xr.Dataset, output_directory: Path) -> dict[str, Path]:
     }
 
 
-def _scalar_metric_bundle(
-    ds: xr.Dataset, input_selectors: dict[str, str]
-) -> CMECMetric:
+def _scalar_metric_bundle(ds: xr.Dataset, input_selectors: dict[str, str]) -> CMECMetric:
     """Build a CMEC metric bundle holding the scalar summary statistics."""
     tas = ds["tas"]
     bundle = {
@@ -167,9 +161,7 @@ def _scalar_metric_bundle(
     return CMECMetric(**bundle).prepend_dimensions(input_selectors)
 
 
-def _series_values(
-    ds: xr.Dataset, input_selectors: dict[str, str]
-) -> list[SeriesMetricValue]:
+def _series_values(ds: xr.Dataset, input_selectors: dict[str, str]) -> list[SeriesMetricValue]:
     """Build the series metric value: the annual-mean tas timeseries."""
     return [
         SeriesMetricValue(
@@ -206,9 +198,7 @@ class AnnualMeanGlobalMeanTas(Diagnostic):
                     # Ensure that we have a contiguous time range to compute the annual mean from
                     RequireContiguousTimerange(group_by=("instance_id",)),
                     # Add the matching areacella dataset as a supplementary dataset
-                    AddSupplementaryDataset.from_defaults(
-                        "areacella", SourceDatasetType.CMIP6
-                    ),
+                    AddSupplementaryDataset.from_defaults("areacella", SourceDatasetType.CMIP6),
                 ),
             ),
         ),
@@ -242,9 +232,7 @@ class AnnualMeanGlobalMeanTas(Diagnostic):
         and the figures so the REF records them.
         """
         time_coder = xr.coders.CFDatetimeCoder(use_cftime=True)
-        ds = xr.open_dataset(
-            definition.output_directory / _OUTPUT_FILENAME, decode_times=time_coder
-        )
+        ds = xr.open_dataset(definition.output_directory / _OUTPUT_FILENAME, decode_times=time_coder)
 
         selectors = definition.datasets[SourceDatasetType.CMIP6].selector_dict()
 
@@ -255,9 +243,7 @@ class AnnualMeanGlobalMeanTas(Diagnostic):
             _ANOMALY_PLOT: "Annual-mean tas anomaly relative to the period mean",
         }
         for filename, caption in captions.items():
-            relative_path = str(
-                definition.as_relative_path(definition.output_directory / filename)
-            )
+            relative_path = str(definition.as_relative_path(definition.output_directory / filename))
             output_bundle[OutputCV.PLOTS.value][relative_path] = {
                 OutputCV.FILENAME.value: relative_path,
                 OutputCV.LONG_NAME.value: caption,

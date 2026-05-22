@@ -1,4 +1,4 @@
-"""Unit tests for the ``ref_tutorials`` helper package. """
+"""Unit tests for the ``ref_tutorials`` helper package."""
 
 from __future__ import annotations
 
@@ -32,7 +32,6 @@ class _MetricValue:
     @classmethod
     def make(cls, value: float, **dims: object) -> _MetricValue:
         return cls(value=value, dimensions=_Dimensions(additional_properties=dict(dims)))
-
 
 
 def test_metric_values_to_dataframe_flattens_dimensions():
@@ -69,14 +68,12 @@ def test_metric_values_to_dataframe_empty_input():
     assert df.empty
 
 
-
 def test_set_publication_style_applies_rcparams():
     matplotlib.rcParams["font.size"] = 99  # Pollute first.
 
     set_publication_style()
 
     assert matplotlib.rcParams["font.size"] == PUBLICATION_RCPARAMS["font.size"]
-
 
 
 def test_model_comparison_figure_returns_fig_and_axes():
@@ -106,7 +103,6 @@ def test_model_comparison_figure_aggregates_ensemble_members():
     fig, ax = model_comparison_figure(df)
 
     assert len(ax.patches) == 2
-
 
 
 def test_save_figure_writes_png_and_pdf(tmp_path):

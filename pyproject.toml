@@ -37,6 +37,7 @@ dev = [
     "nbmake>=1.5",
     "nbqa>=1.8",
     "ruff>=0.6",
+    "pre-commit>=4.6",
 ]
 
 [project.urls]

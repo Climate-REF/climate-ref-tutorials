@@ -1,0 +1,20 @@
+# Pre-commit hooks. Install with: uv run pre-commit install
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    # ruff version.
+    rev: v0.15.14
+    hooks:
+      - id: ruff-check
+      - id: ruff-format
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    # uv version.
+    rev: 0.11.16
+    hooks:
+      - id: uv-lock
+      # Keep .binder/requirements.txt (consumed by Binder/repo2docker) in sync with pyproject.toml and uv.lock.
+      - id: uv-export
+        args:
+          - --frozen
+          - --no-hashes
+          - --no-emit-project
+          - --output-file=.binder/requirements.txt

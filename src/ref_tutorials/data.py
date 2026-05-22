@@ -4,7 +4,6 @@
 package: given the metric values returned by the REF API it produces a tidy :class:`pandas.DataFrame`.
 """
 
-
 import os
 from collections.abc import Iterable
 from pathlib import Path
@@ -32,10 +31,7 @@ def metric_values_to_dataframe(values: Iterable[Any]) -> pd.DataFrame:
         One row per metric value. Columns are the dimension keys plus ``value``.
         The literal string ``"None"`` is normalised to :data:`pandas.NA` and exact duplicate rows are dropped.
     """
-    frame = pd.DataFrame(
-        {**value.dimensions.additional_properties, "value": value.value}
-        for value in values
-    )
+    frame = pd.DataFrame({**value.dimensions.additional_properties, "value": value.value} for value in values)
     return frame.replace("None", pd.NA).drop_duplicates().reset_index(drop=True)
 
 
