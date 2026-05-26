@@ -40,6 +40,7 @@ introduced earlier.
 | 02  | [Querying the REF API](notebooks/02-querying-the-api.ipynb)             | Set up the API client, list diagnostics, fetch metric values, inspect an execution | 01            |
 | 03  | [Figure generation](notebooks/03-publication-figure.ipynb)              | Build a polished multi-model metric comparison figure and save it                  | 01, 02        |
 | 04  | [Running a diagnostic locally](notebooks/04-local-diagnostic-run.ipynb) | Define a custom diagnostic provider and run it locally on small sample data        | 01            |
+| 05  | [Multi-diagnostic example](notebooks/05-ecs-temperature-figure.ipynb)   | Build an IPCC-style figure joining ECS scalars to historical `tas` timeseries      | 01, 02, 03    |
 
 More notebooks will be added over time — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
