@@ -13,3 +13,6 @@ bash scripts/generate_client.sh
 
 # Pre-fetch the CMIP6 sample data so notebook 04 runs without a download wait.
 python -c "from ref_tutorials import fetch_sample_data; fetch_sample_data()"
+
+# Pre-build the matplotlib font cache to save memory
+python -c "import matplotlib.pyplot as plt; plt.figure(); plt.text(0, 0, 'warm fonts'); plt.close('all')"

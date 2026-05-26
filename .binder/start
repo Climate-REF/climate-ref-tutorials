@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Binder/repo2docker start hook. 
+# Sourced before the user's notebook server is launched, so any environment variables exported here are inherited by every kernel started in the session.
+
+# Use the non-interactive Agg backend by default to save memory
+export MPLBACKEND=Agg
