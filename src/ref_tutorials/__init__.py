@@ -18,6 +18,7 @@ The public interface is intentionally small and stable:
 from ref_tutorials.client import DEFAULT_API_URL, get_client
 from ref_tutorials.data import fetch_sample_data, metric_values_to_dataframe
 from ref_tutorials.plotting import (
+    free_memory,
     model_comparison_figure,
     save_figure,
     set_publication_style,
@@ -26,6 +27,7 @@ from ref_tutorials.plotting import (
 __all__ = [
     "DEFAULT_API_URL",
     "fetch_sample_data",
+    "free_memory",
     "get_client",
     "metric_values_to_dataframe",
     "model_comparison_figure",

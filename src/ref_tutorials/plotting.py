@@ -4,6 +4,7 @@ These helpers keep figures consistent across the training notebooks and give
 readers a recipe they can copy into their own work.
 """
 
+import gc
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -99,6 +100,16 @@ def model_comparison_figure(
         ax.set_title(title)
     fig.tight_layout()
     return fig, ax
+
+
+def free_memory() -> None:
+    """Release figures and run a garbage collection pass.
+
+    Call after you have saved a figure and no longer need to redisplay it.
+    This is useful when running in binder which has a tight memory limit.
+    """
+    plt.close("all")
+    gc.collect()
 
 
 def save_figure(fig: Figure, path: str | Path) -> list[Path]:
