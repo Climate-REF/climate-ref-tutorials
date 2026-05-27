@@ -16,6 +16,18 @@ Binder builds the environment and opens JupyterLab; no local setup is required.
 
 This may take several minutes
 
+## Run with Docker (pre-built image)
+
+A pre-built JupyterLab image is published to the GitHub Container Registry
+on every push to `main` and on every release tag.
+No local Python setup is required.
+
+```bash
+docker run --rm -p 8888:8888 ghcr.io/climate-ref/climate-ref-tutorials:latest
+```
+
+Open the JupyterLab URL printed in the terminal (includes the access token).
+
 ## Run locally
 
 Requires [uv](https://docs.astral.sh/uv/), a Python Package Manager to create a local virtual environment.

@@ -1,0 +1,17 @@
+.git
+.github
+.omc
+.venv
+.ruff_cache
+.pytest_cache
+.ipynb_checkpoints
+__pycache__
+*.py[cod]
+*.egg-info
+build
+dist
+climate_ref_client
+notebooks/output
+notebooks/data
+tests/test-data/sample-data
+.DS_Store
