@@ -39,6 +39,3 @@ RUN pip install --no-cache-dir --no-deps . \
     && bash scripts/generate_client.sh \
     && python -c "from ref_tutorials import fetch_sample_data; fetch_sample_data()" \
     && python -c "import matplotlib.pyplot as plt; plt.figure(); plt.text(0, 0, 'warm fonts'); plt.close('all')"
-
-# Use the non-interactive Agg backend by default (matches .binder/start).
-ENV MPLBACKEND=Agg
