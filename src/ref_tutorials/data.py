@@ -35,6 +35,26 @@ def metric_values_to_dataframe(values: Iterable[Any]) -> pd.DataFrame:
     return frame.replace("None", pd.NA).drop_duplicates().reset_index(drop=True)
 
 
+def latest_successful_execution(execution_group: Any) -> Any | None:
+    """Return the most recent successful execution in an execution group.
+
+    Parameters
+    ----------
+    execution_group
+        An execution group as returned by ``climate_ref_client``.
+        It must expose ``.executions``, a list of executions with
+        ``.successful``, ``.retracted`` and ``.created_at`` attributes.
+
+    Returns
+    -------
+    climate_ref_client.models.Execution or None
+        The newest execution that succeeded and has not been retracted,
+        or ``None`` if the group has no such execution.
+    """
+    successful = [e for e in execution_group.executions if e.successful and not e.retracted]
+    return max(successful, key=lambda e: e.created_at, default=None)
+
+
 def fetch_sample_data(force_cleanup: bool = False) -> Path:
     """Download the small CMIP6 sample dataset used by the local-run notebooks.
 

@@ -9,6 +9,7 @@ The public interface is intentionally small and stable:
 - :func:`get_client` -- build a REF API client.
 - :func:`metric_values_to_dataframe` -- turn API metric values into a tidy
   :class:`pandas.DataFrame`.
+- :func:`latest_successful_execution` -- pick the newest successful execution in a group.
 - :func:`set_publication_style` -- apply a consistent matplotlib style.
 - :func:`model_comparison_figure` -- build a multi-model comparison figure.
 - :func:`save_figure` -- save a figure in publication-ready formats.
@@ -16,7 +17,7 @@ The public interface is intentionally small and stable:
 """
 
 from ref_tutorials.client import DEFAULT_API_URL, get_client
-from ref_tutorials.data import fetch_sample_data, metric_values_to_dataframe
+from ref_tutorials.data import fetch_sample_data, latest_successful_execution, metric_values_to_dataframe
 from ref_tutorials.plotting import (
     free_memory,
     model_comparison_figure,
@@ -29,6 +30,7 @@ __all__ = [
     "fetch_sample_data",
     "free_memory",
     "get_client",
+    "latest_successful_execution",
     "metric_values_to_dataframe",
     "model_comparison_figure",
     "save_figure",

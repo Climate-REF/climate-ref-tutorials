@@ -7,6 +7,7 @@ import pandas as pd
 import pytest
 
 from ref_tutorials import (
+    latest_successful_execution,
     metric_values_to_dataframe,
     model_comparison_figure,
     save_figure,
@@ -62,6 +63,39 @@ def test_metric_values_to_dataframe_empty_input():
 
     assert isinstance(df, pd.DataFrame)
     assert df.empty
+
+
+@dataclass
+class _Execution:
+    created_at: str
+    successful: bool = True
+    retracted: bool = False
+
+
+@dataclass
+class _ExecutionGroup:
+    executions: list
+
+
+def test_latest_successful_execution_picks_newest_success():
+    newest = _Execution("2026-03-01")
+    group = _ExecutionGroup(
+        [
+            _Execution("2026-01-01"),
+            newest,
+            _Execution("2026-04-01", successful=False),
+            _Execution("2026-05-01", retracted=True),
+        ]
+    )
+
+    assert latest_successful_execution(group) is newest
+
+
+def test_latest_successful_execution_none_when_no_success():
+    group = _ExecutionGroup([_Execution("2026-01-01", successful=False)])
+
+    assert latest_successful_execution(group) is None
+    assert latest_successful_execution(_ExecutionGroup([])) is None
 
 
 def test_set_publication_style_applies_rcparams():
