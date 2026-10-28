@@ -18,3 +18,12 @@ repos:
           - --no-hashes
           - --no-emit-project
           - --output-file=.binder/requirements.txt
+  - repo: https://github.com/kynan/nbstripout
+    rev: 0.9.1
+    hooks:
+      # Outputs are committed so notebooks render on GitHub, so only strip execution metadata.
+      - id: nbstripout
+        args:
+          - --keep-output
+          - --keep-count
+          - --keep-id
