@@ -49,7 +49,7 @@ introduced earlier.
 | --- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------- |
 | 01  | [REF concepts](notebooks/01-ref-concepts.ipynb)                         | The core vocabulary: diagnostics, providers, executions, metrics, datasets         | None          |
 | 02  | [Querying the REF API](notebooks/02-querying-the-api.ipynb)             | Set up the API client, list diagnostics, fetch metric values, inspect an execution | 01            |
-| 03  | [Figure generation](notebooks/03-publication-figure.ipynb)              | Plot one CMIP7 model time series, add two more, and save the figure                  | 01, 02        |
+| 03  | [Figure generation](notebooks/03-publication-figure.ipynb)              | Start with ACCESS-ESM1-6, add two model time series, and save the figure            | 01, 02        |
 | 04  | [Running a diagnostic locally](notebooks/04-local-diagnostic-run.ipynb) | Run a custom CMIP7 diagnostic on tiny synthetic data generated locally             | 01            |
 | 05  | [Multi-diagnostic example](notebooks/05-ecs-temperature-figure.ipynb)   | Join CMIP7 ECS values to historical `tas` series in three figures                   | 01, 02, 03    |
 
