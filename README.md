@@ -52,12 +52,13 @@ introduced earlier.
 | 03  | [Figure generation](notebooks/03-publication-figure.ipynb)              | Start with ACCESS-ESM1-6, add two model time series, and save the figure            | 01, 02        |
 | 04  | [Running a diagnostic locally](notebooks/04-local-diagnostic-run.ipynb) | Run a custom CMIP7 diagnostic on tiny synthetic data generated locally             | 01            |
 | 05  | [Multi-diagnostic example](notebooks/05-ecs-temperature-figure.ipynb)   | Join CMIP7 ECS values to historical `tas` series in three figures                   | 01, 02, 03    |
+| 06  | [Guided Python API tour](notebooks/06-guided-api-tour.ipynb)            | Follow the dashboard journey in code: select ACCESS-ESM1-6, open plots, compare scores | 01, 02     |
 
 More notebooks will be added over time — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## How it works
 
-- Notebooks 01–03 and 05 query the **live** public REF API at <https://api.climate-ref.org>.
+- Notebooks 01–03, 05 and 06 query the **live** public REF API at <https://api.climate-ref.org>.
   An internet connection is required; the notebooks fail clearly if the API is unreachable.
 - The REF API client (`climate_ref_client`) is **generated** from the API's
   [OpenAPI schema](https://api.climate-ref.org/api/v1/openapi.json) by `scripts/generate_client.sh`,
