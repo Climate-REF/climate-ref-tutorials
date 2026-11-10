@@ -48,8 +48,8 @@ introduced earlier.
 | #   | Notebook                                                                | What you will learn                                                                | Prerequisites |
 | --- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------- |
 | 01  | [REF concepts](notebooks/01-ref-concepts.ipynb)                         | The core vocabulary: diagnostics, providers, executions, metrics, datasets         | None          |
-| 02  | [Querying the REF API](notebooks/02-querying-the-api.ipynb)             | Fetch metric values, plot ACCESS-ESM1-6 ensemble members, and inspect maps and Taylor diagrams | 01 |
-| 03  | [Time-series workshop](notebooks/03-publication-figure.ipynb)           | Build a three-model CMIP7 chart, then plot every ACCESS-ESM1-6 historical member and their mean | 01, 02 |
+| 02  | [Querying the REF API](notebooks/02-querying-the-api.ipynb)             | Fetch metric values, compare ACCESS-ESM1-6 members with HadCRUT5 observations, and inspect maps and Taylor diagrams | 01 |
+| 03  | [Time-series workshop](notebooks/03-publication-figure.ipynb)           | Build a three-model CMIP7 chart, then compare ACCESS-ESM1-6 members and HadCRUT5 observations | 01, 02 |
 | 04  | [Running a diagnostic locally](notebooks/04-local-diagnostic-run.ipynb) | Run a custom CMIP7 diagnostic on tiny synthetic data generated locally             | 01            |
 | 05  | [Multi-diagnostic example](notebooks/05-ecs-temperature-figure.ipynb)   | Join CMIP7 ECS values to historical `tas` series in three figures                   | 01, 02, 03    |
 | 06  | [Guided Python API tour](notebooks/06-guided-api-tour.ipynb)            | Follow the dashboard journey in code: select ACCESS-ESM1-6, open plots, compare scores | 01, 02     |
@@ -59,6 +59,7 @@ More notebooks will be added over time — see [CONTRIBUTING.md](CONTRIBUTING.md
 ## How it works
 
 - Notebooks 01–03, 05 and 06 query the **live** public REF API at <https://api.climate-ref.org>.
+- Notebooks 02 and 03 also read the annual HadCRUT5 global temperature series from the [Met Office](https://www.metoffice.gov.uk/hadobs/hadcrut5/data/HadCRUT.5.2.0.0/download.html).
   An internet connection is required; the notebooks fail clearly if the API is unreachable.
 - The REF API client (`climate_ref_client`) is **generated** from the API's
   [OpenAPI schema](https://api.climate-ref.org/api/v1/openapi.json) by `scripts/generate_client.sh`,
