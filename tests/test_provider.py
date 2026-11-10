@@ -34,11 +34,11 @@ def test_build_provider_is_independent():
     assert fresh.get("annual-mean-global-mean-tas") is not None
 
 
-def test_diagnostic_requires_cmip6_tas():
+def test_diagnostic_requires_cmip7_tas():
     from climate_ref_core.datasets import SourceDatasetType
 
     diagnostic = AnnualMeanGlobalMeanTas()
     requirement = diagnostic.data_requirements[0][0]
 
-    assert requirement.source_type == SourceDatasetType.CMIP6
+    assert requirement.source_type == SourceDatasetType.CMIP7
     assert requirement.filters[0].facets == {"variable_id": ("tas",)}

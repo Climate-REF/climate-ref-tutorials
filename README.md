@@ -5,9 +5,9 @@
 
 A self-contained set of training notebooks for the [Climate Rapid Evaluation Framework (REF)](https://climate-ref.org).
 
-The notebooks take you from *what the REF is* through to *querying the public
-REF API* and *building a publication-ready figure*.
-They are written for climate scientists, analysts, and newcomers with no prior REF knowledge is assumed.
+The notebooks take you from *what the REF is* through to *querying public
+CMIP7 results* and *building a publication-ready figure*.
+They are written for climate scientists, analysts, and newcomers; no prior REF knowledge is assumed.
 
 ## Run in your browser (no installation)
 
@@ -37,7 +37,6 @@ git clone https://github.com/Climate-REF/climate-ref-tutorials.git
 cd climate-ref-tutorials
 uv sync                           # create the environment
 uv run bash scripts/generate_client.sh   # generate the REF API client
-uv run python -c "from ref_tutorials import fetch_sample_data; fetch_sample_data()"   # pre-fetch sample data (notebook 04)
 uv run jupyter lab notebooks      # open the notebooks
 ```
 
@@ -49,23 +48,26 @@ introduced earlier.
 | #   | Notebook                                                                | What you will learn                                                                | Prerequisites |
 | --- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------- |
 | 01  | [REF concepts](notebooks/01-ref-concepts.ipynb)                         | The core vocabulary: diagnostics, providers, executions, metrics, datasets         | None          |
-| 02  | [Querying the REF API](notebooks/02-querying-the-api.ipynb)             | Set up the API client, list diagnostics, fetch metric values, inspect an execution | 01            |
-| 03  | [Figure generation](notebooks/03-publication-figure.ipynb)              | Build a polished multi-model metric comparison figure and save it                  | 01, 02        |
-| 04  | [Running a diagnostic locally](notebooks/04-local-diagnostic-run.ipynb) | Define a custom diagnostic provider and run it locally on small sample data        | 01            |
-| 05  | [Multi-diagnostic example](notebooks/05-ecs-temperature-figure.ipynb)   | Build an IPCC-style figure joining ECS scalars to historical `tas` timeseries      | 01, 02, 03    |
+| 02  | [Querying the REF API](notebooks/02-querying-the-api.ipynb)             | Fetch metric values, compare ACCESS-ESM1-6 members with HadCRUT5 observations, and inspect maps and Taylor diagrams | 01 |
+| 03  | [Time-series workshop](notebooks/03-publication-figure.ipynb)           | Build a three-model CMIP7 chart, then compare ACCESS-ESM1-6 members and HadCRUT5 observations | 01, 02 |
+| 04  | [Running a diagnostic locally](notebooks/04-local-diagnostic-run.ipynb) | Run a custom CMIP7 diagnostic on tiny synthetic data generated locally             | 01            |
+| 05  | [Multi-diagnostic example](notebooks/05-ecs-temperature-figure.ipynb)   | Join CMIP7 ECS values to historical `tas` series in three figures                   | 01, 02, 03    |
+| 06  | [Guided Python API tour](notebooks/06-guided-api-tour.ipynb)            | Follow the dashboard journey in code: select ACCESS-ESM1-6, open plots, compare scores | 01, 02     |
 
 More notebooks will be added over time — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## How it works
 
-- Notebooks 01–03 query the **live** public REF API at <https://api.climate-ref.org>.
+- Notebooks 01–03, 05 and 06 query the **live** public REF API at <https://api.climate-ref.org>.
+- Notebooks 02 and 03 also read the annual HadCRUT5 global temperature series from the [Met Office](https://www.metoffice.gov.uk/hadobs/hadcrut5/data/HadCRUT.5.2.0.0/download.html).
   An internet connection is required; the notebooks fail clearly if the API is unreachable.
 - The REF API client (`climate_ref_client`) is **generated** from the API's
   [OpenAPI schema](https://api.climate-ref.org/api/v1/openapi.json) by `scripts/generate_client.sh`,
   so it always matches the current API.
   It is not committed to this repository.
-- Notebook 04 fetches a small CMIP6 sample dataset via the REF CLI and runs a
-  **custom diagnostic provider**, defined in `src/ref_tutorials/provider.py` locally.
+- Notebook 04 generates two small synthetic CMIP7-style NetCDF files locally and runs a
+  **custom diagnostic provider**, defined in `src/ref_tutorials/provider.py`.
+  The synthetic files demonstrate the REF workflow; they are not real model output.
 - Shared logic lives in the `ref_tutorials` helper package (`src/ref_tutorials`),
   keeping the notebooks short and readable.
 - Notebook **outputs are committed** so the notebooks render fully on GitHub without being run.

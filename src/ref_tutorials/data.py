@@ -55,6 +55,81 @@ def latest_successful_execution(execution_group: Any) -> Any | None:
     return max(successful, key=lambda e: e.created_at, default=None)
 
 
+def create_cmip7_sample_data(directory: Path = Path("data/cmip7-sample")) -> Path:
+    """Write a tiny synthetic CMIP7-style ``tas`` and ``areacella`` pair.
+
+    The files follow the CMIP7 DRS layout so REF's CMIP7 adapter can discover
+    them. They are teaching data, not output from a real climate model.
+    """
+    import numpy as np
+    import xarray as xr
+
+    directory = Path(directory)
+    common = {
+        "mip_era": "CMIP7",
+        "activity_id": "CMIP",
+        "institution_id": "Tutorial",
+        "source_id": "Tutorial-Model",
+        "experiment_id": "historical",
+        "variant_label": "r1i1p1f1",
+        "grid_label": "g100",
+        "region": "glb",
+        "realm": "atmos",
+        "nominal_resolution": "100 km",
+        "license_id": "CC0-1.0",
+    }
+    drs_root = directory / "MIP-DRS7" / "CMIP7"
+    model_root = drs_root / "CMIP" / "Tutorial" / "Tutorial-Model" / "historical" / "r1i1p1f1" / "glb"
+    lat = np.array([-60.0, 0.0, 60.0])
+    lon = np.array([0.0, 90.0, 180.0, 270.0])
+    months = np.arange(120)
+    time = pd.date_range("1850-01-01", periods=len(months), freq="MS")
+    tas = (
+        280.0
+        + 0.02 * months[:, None, None] / 12
+        + 3.0 * np.sin(2 * np.pi * months[:, None, None] / 12)
+        - 0.05 * np.abs(lat[None, :, None])
+        + np.zeros((1, 1, len(lon)))
+    )
+
+    tas_dir = model_root / "mon" / "tas" / "tavg-h2m-hxy-u" / "g100" / "v1"
+    tas_dir.mkdir(parents=True, exist_ok=True)
+    xr.Dataset(
+        {"tas": (("time", "lat", "lon"), tas.astype("float32"), {"units": "K"})},
+        coords={"time": time, "lat": lat, "lon": lon},
+        attrs={
+            **common,
+            "variable_id": "tas",
+            "frequency": "mon",
+            "branding_suffix": "tavg-h2m-hxy-u",
+            "branded_variable": "tas_tavg-h2m-hxy-u",
+            "tracking_id": "synthetic-tas",
+        },
+    ).to_netcdf(
+        tas_dir / "tas_tavg-h2m-hxy-u_mon_glb_g100_Tutorial-Model_historical_r1i1p1f1_185001-185912.nc"
+    )
+
+    area = 1e12 * np.cos(np.deg2rad(lat))[:, None] * np.ones((1, len(lon)))
+    area_dir = model_root / "fx" / "areacella" / "u" / "g100" / "v1"
+    area_dir.mkdir(parents=True, exist_ok=True)
+    xr.Dataset(
+        {"areacella": (("lat", "lon"), area, {"units": "m2"})},
+        coords={"lat": lat, "lon": lon},
+        attrs={
+            **common,
+            "variable_id": "areacella",
+            "frequency": "fx",
+            "branding_suffix": "u",
+            "branded_variable": "areacella_u",
+            "tracking_id": "synthetic-areacella",
+        },
+    ).to_netcdf(area_dir / "areacella_u_fx_glb_g100_Tutorial-Model_historical_r1i1p1f1.nc")
+
+    # The current REF adapter searches ten levels below the supplied root.
+    # Starting at the activity directory includes the version-level files.
+    return drs_root / "CMIP"
+
+
 def fetch_sample_data(force_cleanup: bool = False) -> Path:
     """Download the small CMIP6 sample dataset used by the local-run notebooks.
 

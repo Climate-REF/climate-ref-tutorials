@@ -6,7 +6,7 @@ the tutorials define their own minimal one here, so notebook 04 can show a compl
 real custom provider that lives entirely in this repository.
 
 The diagnostic computes the annual-mean, area-weighted global-mean near-surface air
-temperature (``tas``) of a CMIP6 dataset, and then registers a representative slice of
+temperature (``tas``) of a CMIP7 dataset, and then registers a representative slice of
 everything a real diagnostic produces:
 
 - **scalar** metric values (the period mean, minimum and maximum);
@@ -176,7 +176,7 @@ class AnnualMeanGlobalMeanTas(Diagnostic):
     """Annual-mean, global-mean near-surface air temperature.
 
     A minimal custom diagnostic for the tutorials.
-    It requires CMIP6 ``tas`` data, and pulls in the matching ``areacella`` cell-area field as a
+    It requires CMIP7 ``tas`` data, and pulls in the matching ``areacella`` cell-area field as a
     supplementary dataset so the global mean can be area-weighted.
 
     Its execution registers scalar metric values, a series metric value, and two figures.
@@ -188,7 +188,7 @@ class AnnualMeanGlobalMeanTas(Diagnostic):
     data_requirements = (
         (
             DataRequirement(
-                source_type=SourceDatasetType.CMIP6,
+                source_type=SourceDatasetType.CMIP7,
                 # We only look at each
                 filters=(FacetFilter(facets={"variable_id": ("tas",)}),),
                 group_by=("source_id", "experiment_id", "variant_label"),
@@ -196,7 +196,7 @@ class AnnualMeanGlobalMeanTas(Diagnostic):
                     # Ensure that we have a contiguous time range to compute the annual mean from
                     RequireContiguousTimerange(group_by=("instance_id",)),
                     # Add the matching areacella dataset as a supplementary dataset
-                    AddSupplementaryDataset.from_defaults("areacella", SourceDatasetType.CMIP6),
+                    AddSupplementaryDataset.from_defaults("areacella", SourceDatasetType.CMIP7),
                 ),
             ),
         ),
@@ -212,7 +212,7 @@ class AnnualMeanGlobalMeanTas(Diagnostic):
 
     def execute(self, definition: ExecutionDefinition) -> None:
         """Compute the diagnostic: write the output NetCDF and the figures."""
-        input_datasets = definition.datasets[SourceDatasetType.CMIP6]
+        input_datasets = definition.datasets[SourceDatasetType.CMIP7]
 
         result = calculate_annual_mean_global_mean(input_datasets.path.to_list())
         if "time_bnds" in result:
@@ -232,7 +232,7 @@ class AnnualMeanGlobalMeanTas(Diagnostic):
         time_coder = xr.coders.CFDatetimeCoder(use_cftime=True)
         ds = xr.open_dataset(definition.output_directory / _OUTPUT_FILENAME, decode_times=time_coder)
 
-        selectors = definition.datasets[SourceDatasetType.CMIP6].selector_dict()
+        selectors = definition.datasets[SourceDatasetType.CMIP7].selector_dict()
 
         # Register the figures written by execute().
         output_bundle = CMECOutput.create_template()
