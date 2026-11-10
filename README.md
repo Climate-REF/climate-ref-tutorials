@@ -48,8 +48,8 @@ introduced earlier.
 | #   | Notebook                                                                | What you will learn                                                                | Prerequisites |
 | --- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------- |
 | 01  | [REF concepts](notebooks/01-ref-concepts.ipynb)                         | The core vocabulary: diagnostics, providers, executions, metrics, datasets         | None          |
-| 02  | [Querying the REF API](notebooks/02-querying-the-api.ipynb)             | Fetch metric values, NetCDF data, an ACCESS-ESM1-6 map, and a Taylor diagram       | 01            |
-| 03  | [Time-series workshop](notebooks/03-publication-figure.ipynb)           | Query CMIP7 data, plot ACCESS-ESM1-6, then add two models one cell at a time         | 01, 02        |
+| 02  | [Querying the REF API](notebooks/02-querying-the-api.ipynb)             | Fetch metric values, plot ACCESS-ESM1-6 ensemble members, and inspect maps and Taylor diagrams | 01 |
+| 03  | [Time-series workshop](notebooks/03-publication-figure.ipynb)           | Build a three-model CMIP7 chart, then plot every ACCESS-ESM1-6 historical member and their mean | 01, 02 |
 | 04  | [Running a diagnostic locally](notebooks/04-local-diagnostic-run.ipynb) | Run a custom CMIP7 diagnostic on tiny synthetic data generated locally             | 01            |
 | 05  | [Multi-diagnostic example](notebooks/05-ecs-temperature-figure.ipynb)   | Join CMIP7 ECS values to historical `tas` series in three figures                   | 01, 02, 03    |
 | 06  | [Guided Python API tour](notebooks/06-guided-api-tour.ipynb)            | Follow the dashboard journey in code: select ACCESS-ESM1-6, open plots, compare scores | 01, 02     |
