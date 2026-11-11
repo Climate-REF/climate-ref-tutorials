@@ -53,13 +53,18 @@ introduced earlier.
 | 03  | [Figure generation](notebooks/03-publication-figure.ipynb)              | Build a polished multi-model metric comparison figure and save it                  | 01, 02        |
 | 04  | [Running a diagnostic locally](notebooks/04-local-diagnostic-run.ipynb) | Define a custom diagnostic provider and run it locally on small sample data        | 01            |
 | 05  | [Multi-diagnostic example](notebooks/05-ecs-temperature-figure.ipynb)   | Build an IPCC-style figure joining ECS scalars to historical `tas` timeseries      | 01, 02, 03    |
+| 07  | [Retrieve regridded fields](notebooks/07-regridded-data.ipynb)          | Download published NetCDF climatologies, verify grids and averaging periods, and reuse them with xarray | 01, 02 |
 
 More notebooks will be added over time — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## How it works
 
-- Notebooks 01–03 query the **live** public REF API at <https://api.climate-ref.org>.
+- Notebooks 01–03, 05 and 07 query the **live** public REF API at <https://api.climate-ref.org>.
   An internet connection is required; the notebooks fail clearly if the API is unreachable.
+- Notebook 07 retrieves saved 1° precipitation climatologies for ACCESS-ESM1-6 and GPCP.
+  It explains which processed fields are available and why the API does not expose every
+  regridded intermediate file. Downloads and provenance are retained under `notebooks/data/`
+  when run from the notebook directory.
 - The REF API client (`climate_ref_client`) is **generated** from the API's
   [OpenAPI schema](https://api.climate-ref.org/api/v1/openapi.json) by `scripts/generate_client.sh`,
   so it always matches the current API.
